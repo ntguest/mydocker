@@ -1,0 +1,77 @@
+version: '2'
+services:
+    home-assistant:
+        container_name: homeassistant
+        volumes:
+            - '/home/data/homeassistant:/config'
+            - '/etc/localtime:/etc/localtime:ro'
+            - '/var/run/docker.sock:/var/run/docker.sock'
+            - /run/dbus:/run/dbus:ro
+        devices:
+            - /dev/ttyUSB0:/dev/ttyUSB0
+        network_mode: host
+        restart: always
+        privileged: true
+        image: 'homeassistant/home-assistant:stable'
+    file-editor:
+        container_name: file-editor
+        network_mode: host
+        ports:
+            - '3218:3218'
+        restart: always
+        volumes:
+            - '/home/data/homeassistant:/homeassistant'
+            - '/home/data/esphome:/esphome'
+            - '/home/data/file-editor:/config'
+        image: causticlab/hass-configurator-docker
+    esphome:
+        container_name: esphome
+        volumes:
+            - '/home/data/esphome:/config'
+            - '/etc/localtime:/etc/localtime:ro'
+        ports:
+            - '6052:6052'
+        network_mode: host
+        restart: always
+        image: esphome/esphome
+    duplicati:
+        image: lscr.io/linuxserver/duplicati:latest
+        container_name: duplicati
+        environment:
+            - PUID=0
+            - PGID=1000
+            - TZ=Europe/Kiev
+        volumes:
+            - /home/data/duplicati/config:/config
+            - /home/backups:/backups
+            - /home/data:/source
+        ports:
+          - 8200:8200
+        restart: unless-stopped
+    cloudflared:
+        image: erisamoe/cloudflared
+        container_name: cloudflared
+        restart: unless-stopped
+        command: tunnel run
+        environment:
+            - TUNNEL_TOKEN=eyJhIjoiOTYzYWRkZTZkNjRjZTNhMTM0ZTlkOTdhMDY4MWQzMWUiLCJ0IjoiNzM1ZTZmMzgtYzAxYS00Mjc3LWFjNjMtZDY2NWY4NGFhNDU1IiwicyI6Ik5UTXpZbVF6WmpVdFpEQmxZUzAwTmpobExUaGhZbUl0TVRrelpXTTBPRFUxT1RKbCJ9
+    mosquitto:
+        container_name: mqtt
+        image: eclipse-mosquitto
+        volumes:
+            - ./mosquitto_data/:/mosquitto/data/
+        ports:
+            - "1883:1883"
+        restart: always
+    zigbee2mqtt:
+        container_name: zigbee2mqtt
+        image: koenkk/zigbee2mqtt
+        volumes:
+            - /home/data/mosquitto/zigbee2mqtt_data/:/app/data/
+            - /run/udev:/run/udev:ro
+        devices:
+            - /dev/ttyACM0:/dev/ttyACM0
+        restart: always
+        privileged: true
+        environment:
+            - TZ=Europe/Kiev
