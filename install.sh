@@ -226,23 +226,21 @@ echo "Installing ...."
 #docker-compose up -d  > /dev/null 2>&1
 docker-compose up -d
 
-for word in $SERVICES
-do
-    if [ $word == "\"HA\"" ]; then
-        while [ ! -f "$DATA_SHARE/data/homeassistant/configuration.yaml" ]; do sleep 2; done
-        apt install wget unzip -y
-        mkdir "$DATA_SHARE/data/homeassistant/custom_components"
-        mkdir "$DATA_SHARE/data/homeassistant/custom_components/hacs"
-        cd "$DATA_SHARE/data/homeassistant/custom_components"
-        wget "https://github.com/hacs/integration/releases/latest/download/hacs.zip"
-        unzip "$DATA_SHARE/data/homeassistant/custom_components/hacs.zip" -d "$DATA_SHARE/data/homeassistant/custom_components/hacs"
-        rm "$DATA_SHARE/data/homeassistant/custom_components/hacs.zip"
-        cat << EOF >> $DATA_SHARE/data/homeassistant/configuration.yaml
+
+while [ ! -f "$DATA_SHARE/data/homeassistant/configuration.yaml" ]; do sleep 2; done
+apt install wget unzip -y
+mkdir "$DATA_SHARE/data/homeassistant/custom_components"
+mkdir "$DATA_SHARE/data/homeassistant/custom_components/hacs"
+cd "$DATA_SHARE/data/homeassistant/custom_components"
+wget "https://github.com/hacs/integration/releases/latest/download/hacs.zip"
+unzip "$DATA_SHARE/data/homeassistant/custom_components/hacs.zip" -d "$DATA_SHARE/data/homeassistant/custom_components/hacs"
+rm "$DATA_SHARE/data/homeassistant/custom_components/hacs.zip"
+cat << EOF >> $DATA_SHARE/data/homeassistant/configuration.yaml
 homeassistant:
   packages: !include_dir_named packages
 EOF
-        mkdir $DATA_SHARE/data/homeassistant/packages > /dev/null 2>&1
-        cat << EOF >> $DATA_SHARE/data/homeassistant/packages/sysmon.yaml
+mkdir $DATA_SHARE/data/homeassistant/packages > /dev/null 2>&1
+cat << EOF >> $DATA_SHARE/data/homeassistant/packages/sysmon.yaml
 sensor:
   - platform: systemmonitor
     scan_interval: 180
@@ -266,18 +264,17 @@ sensor:
     - type: processor_use
     - type: processor_temperature
 EOF
-        for word in $SERVICES
-        do
-             if [ $word == "\"FED\"" ]; then                
-                cat << EOF >> $DATA_SHARE/data/homeassistant/packages/panel_file_editor.yaml
+              
+cat << EOF >> $DATA_SHARE/data/homeassistant/packages/panel_file_editor.yaml
 panel_iframe:
   configurator:
     title: File editor
     icon: mdi:wrench
-    url: http://$IP_ADDRESS:3218
+    url: https://${DOMAIN}fed
     require_admin: true
 EOF
-                cat << EOF >> $DATA_SHARE/data/file-editor/settings.conf
+
+cat << EOF >> $DATA_SHARE/data/file-editor/settings.conf
 {
     "LISTENIP": "0.0.0.0",
     "PORT": 3218,
@@ -306,41 +303,36 @@ EOF
 }
 EOF
 #fed HASS_API_PASSWORD "long-lived access token"
-                docker restart file-editor
-             fi
-             if [ $word == "\"ESP\"" ]; then
-                cat << EOF >> $DATA_SHARE/data/homeassistant/packages/panel_esphome.yaml
+docker restart file-editor
+
+cat << EOF >> $DATA_SHARE/data/homeassistant/packages/panel_esphome.yaml
 panel_iframe:
   esphome:
     title: ESPHome
     icon: mdi:chip
-    url: http://$IP_ADDRESS:6052
+    url: https://${DOMAIN}esp
     require_admin: true
 EOF
-             fi
-             if [ $word == "\"DUPL\"" ]; then
-                cat << EOF >> $DATA_SHARE/data/homeassistant/packages/panel_duplicati.yaml
+
+cat << EOF >> $DATA_SHARE/data/homeassistant/packages/panel_duplicati.yaml
 panel_iframe:
   duplicati:
     title: Duplicati
     icon: mdi:file-restore
-    url: http://$IP_ADDRESS:8200
+    url: https://${DOMAIN}dup
     require_admin: true
 EOF
-             fi
-             if [ $word == "\"PO\"" ]; then
-                cat << EOF >> $DATA_SHARE/data/homeassistant/packages/panel_portainer.yaml
+
+cat << EOF >> $DATA_SHARE/data/homeassistant/packages/panel_portainer.yaml
 panel_iframe:
   portainer:
     title: Portainer
     icon: mdi:docker
-    url: http://$IP_ADDRESS:9000
+    url: https://${DOMAIN}port
     require_admin: true
 EOF
-             fi
-             if [ $word == "\"MARIA\"" ]; then
-                #SQL_IP=$(docker inspect --format '{{ .NetworkSettings.IPAddress }}' docker)
-                cat << EOF >> $DATA_SHARE/data/homeassistant/packages/sql.yaml
+
+cat << EOF >> $DATA_SHARE/data/homeassistant/packages/sql.yaml
 recorder:
   db_url: mysql://$SQL_USR:$SQL_PWD@$IP_ADDRESS:3308/$SQL_DB?charset=utf8mb4
   commit_interval: 60
@@ -353,9 +345,5 @@ sensor:
         column: 'value'
         unit_of_measurement: Mb
 EOF
-                rm $DATA_SHARE/data/homeassistant/home-assistant_v2.db
-             fi
-        done
-        docker restart homeassistant
-    fi
-done
+rm $DATA_SHARE/data/homeassistant/home-assistant_v2.db
+docker restart homeassistant
