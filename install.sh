@@ -29,11 +29,11 @@ SERVICES=$(whiptail --title "${msg[0]}" --checklist "" 18 60 10 --notags --nocan
 HA "Home Assistant container" ON \
 FED "File Editor" ON \
 ESP "ESPHome" ON \
-MARIA "MariaDB" ON \
+MARIA "MariaDB" OFF \
 DUPL "Duplicati" ON \
 CLOUD "Cloudflared tunnel" ON \
 MQTT "Mosquito broker" ON \
-Z2M "Zigbee2MQTT" OFF 3>&1 1>&2 2>&3)
+Z2M "Zigbee2MQTT" ON 3>&1 1>&2 2>&3)
 
 DATA_SHARE=$(whiptail --title "${msg[1]}" --inputbox "" 10 60 --nocancel /home 3>&1 1>&2 2>&3)
 TIMEZONE=$(whiptail --title "${msg[19]}" --inputbox "" 10 60 --nocancel Europe/Kiev 3>&1 1>&2 2>&3)
