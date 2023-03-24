@@ -46,13 +46,13 @@ TIMEZONE=$(whiptail --title "${msg[19]}" --inputbox "" 10 60 --nocancel Europe/K
 usermod -aG docker $USER
 
 cd $DATA_SHARE
-
+wget https://raw.githubusercontent.com/ntguest/mydocker/main/files/docker-compose.yml
 echo "Installing ...."
 #docker-compose up -d  > /dev/null 2>&1
 docker-compose up -d
 
 cd /home/data/mosquitto/config
-wget https://github.com/ntguest/mydocker/raw/main/files/default.conf
+wget https://raw.githubusercontent.com/ntguest/mydocker/main/files/default.conf
 docker exec -it mosquitto mosquitto_passwd -c /mosquitto/config/passwd ntguest
 docker compose restart mosquitto
 
