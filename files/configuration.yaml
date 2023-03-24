@@ -4,7 +4,7 @@ homeassistant:
   legacy_entity_attributes: true
 permit_join: false
 mqtt:
-  base_topic: zigbee2mqtt
+  base_topic: zbgw03
   server: 'mqtt:/localhost:1883'
   user: ntguest
   password: '170974'
