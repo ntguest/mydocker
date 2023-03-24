@@ -52,8 +52,8 @@ echo "Installing ...."
 docker-compose up -d
 
 cd /home/data/mosquitto/config
-wget https://raw.githubusercontent.com/ntguest/mydocker/main/files/mosquitto.conf
 wget https://raw.githubusercontent.com/ntguest/mydocker/main/files/passwd
+wget https://raw.githubusercontent.com/ntguest/mydocker/main/files/mosquitto.conf
 docker exec -it mosquitto mosquitto_passwd -c /mosquitto/config/passwd ntguest
 docker restart mosquitto
 
