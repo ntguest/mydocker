@@ -57,7 +57,9 @@ services:
         container_name: mqtt
         image: eclipse-mosquitto
         volumes:
-            - ./mosquitto_data/:/mosquitto/data/
+            - /home/data/mosquitto/config:/mosquitto/config
+            - /home/data/mosquitto/data:/mosquitto/data
+            - /home/data/mosquitto/log:/mosquitto/log
         ports:
             - "1883:1883"
         restart: always
