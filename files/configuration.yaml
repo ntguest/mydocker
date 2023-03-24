@@ -5,7 +5,7 @@ homeassistant:
 permit_join: false
 mqtt:
   base_topic: zigbee2mqtt
-  server: 'mqtt://192.168.86.224:1883'
+  server: 'mqtt:/localhost:1883'
   user: ntguest
   password: '170974'
   keepalive: 60
@@ -13,8 +13,8 @@ mqtt:
   version: 4
 serial:
   port: /dev/serial/by-id/usb-1a86_USB_Serial-if00-port0
-  #adapter: deconz		#(uncomment for ConBee II)
+  adapter: ezsp
 advanced:
   pan_id: GENERATE
   network_key: GENERATE
-  channel: 20
+  channel: 15
