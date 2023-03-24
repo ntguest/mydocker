@@ -3,7 +3,8 @@ set -e
 error() { echo -e "\e[31m[error] $*\e[39m"; exit 1; }
 if [[ $EUID != 0 ]]; then error This installer requires root privileges. Try again as \"root\" ... ; fi
 apt install whiptail -y
-
+curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+chmod +x /usr/local/bin/docker-compose
 languages() {
 msg="message_$langset[@]"; msg=("${!msg}")
 for b in ${!message_en[@]} ; do if [[ ! ${msg[$b]} ]] ; then msg[$b]=${message_en[$b]}; fi; done
@@ -49,6 +50,11 @@ cd $DATA_SHARE
 echo "Installing ...."
 #docker-compose up -d  > /dev/null 2>&1
 docker-compose up -d
+
+cd /home/data/mosquitto/config
+wget https://github.com/ntguest/mydocker/raw/main/files/default.conf
+docker exec -it mosquitto mosquitto_passwd -c /mosquitto/config/passwd ntguest
+docker compose restart mosquitto
 
 
 while [ ! -f "$DATA_SHARE/data/homeassistant/configuration.yaml" ]; do sleep 2; done
