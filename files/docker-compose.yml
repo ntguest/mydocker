@@ -70,7 +70,7 @@ services:
             - /home/data/mosquitto/zigbee2mqtt_data/:/app/data/
             - /run/udev:/run/udev:ro
         devices:
-            - /dev/ttyACM0:/dev/ttyACM0
+            - /dev/serial/by-id/usb-1a86_USB_Serial-if00-port0:/dev/ttyACM0
         restart: always
         privileged: true
         environment:
