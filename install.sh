@@ -56,6 +56,9 @@ wget https://raw.githubusercontent.com/ntguest/mydocker/main/files/default.conf
 docker exec -it mosquitto mosquitto_passwd -c /mosquitto/config/passwd ntguest
 docker compose restart mosquitto
 
+cd /home/data/zigbee2mqtt/data
+wget https://raw.githubusercontent.com/ntguest/mydocker/main/files/configuration.yaml
+docker compose restart zigbee2mqtt
 
 while [ ! -f "$DATA_SHARE/data/homeassistant/configuration.yaml" ]; do sleep 2; done
 apt install wget unzip -y
