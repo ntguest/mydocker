@@ -52,13 +52,13 @@ echo "Installing ...."
 docker-compose up -d
 
 cd /home/data/mosquitto/config
-wget https://raw.githubusercontent.com/ntguest/mydocker/main/files/default.conf
+wget https://raw.githubusercontent.com/ntguest/mydocker/main/files/mosquitto.conf
 docker exec -it mosquitto mosquitto_passwd -c /mosquitto/config/passwd ntguest
-docker compose restart mosquitto
+docker restart mosquitto
 
 cd /home/data/zigbee2mqtt/data
 wget https://raw.githubusercontent.com/ntguest/mydocker/main/files/configuration.yaml
-docker compose restart zigbee2mqtt
+docker restart zigbee2mqtt
 
 while [ ! -f "$DATA_SHARE/data/homeassistant/configuration.yaml" ]; do sleep 2; done
 apt install wget unzip -y
