@@ -100,7 +100,7 @@ panel_iframe:
   configurator:
     title: File editor
     icon: mdi:wrench
-    url: https://${DOMAIN}fed
+    url: http://$IP_ADDRESS:3218
     require_admin: true
 EOF
 
@@ -140,7 +140,7 @@ panel_iframe:
   esphome:
     title: ESPHome
     icon: mdi:chip
-    url: https://${DOMAIN}esp
+    url: http://$IP_ADDRESS:6052
     require_admin: true
 EOF
 
@@ -149,7 +149,7 @@ panel_iframe:
   duplicati:
     title: Duplicati
     icon: mdi:file-restore
-    url: https://${DOMAIN}dup
+    url: http://$IP_ADDRESS:8200
     require_admin: true
 EOF
 
@@ -158,7 +158,7 @@ panel_iframe:
   portainer:
     title: Portainer
     icon: mdi:docker
-    url: https://${DOMAIN}port
+    url: http://$IP_ADDRESS:9000
     require_admin: true
 EOF
 
