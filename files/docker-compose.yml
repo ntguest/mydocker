@@ -67,7 +67,7 @@ services:
         container_name: zigbee2mqtt
         image: koenkk/zigbee2mqtt
         volumes:
-            - /home/data/mosquitto/zigbee2mqtt_data/:/app/data/
+            - /home/data/zigbee2mqtt/data:/app/data/
             - /run/udev:/run/udev:ro
         devices:
             - /dev/serial/by-id/usb-1a86_USB_Serial-if00-port0:/dev/ttyACM0
