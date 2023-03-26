@@ -2,7 +2,12 @@
 set -e
 error() { echo -e "\e[31m[error] $*\e[39m"; exit 1; }
 if [[ $EUID != 0 ]]; then error This installer requires root privileges. Try again as \"root\" ... ; fi
-apt install whiptail -y
+
+if ! whiptail; then
+  apt install whiptail -y
+fi
+
+curl -fsSL get.docker.com | sh
 curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
 chmod +x /usr/local/bin/docker-compose
 languages() {
