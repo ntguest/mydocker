@@ -8,7 +8,7 @@ if ! whiptail -v > /dev/null 2>&1; then
 fi
 
 if ! wget -v > /dev/null 2>&1; then
-  apt install whiptail -y
+  apt install wget  -y
 fi
 
 if ! docker info > /dev/null 2>&1; then
