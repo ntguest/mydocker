@@ -51,11 +51,11 @@ echo "Installing ...."
 #docker-compose up -d  > /dev/null 2>&1
 docker-compose up -d
 
-cd /home/data/mosquitto/config
-wget https://raw.githubusercontent.com/ntguest/mydocker/main/files/mosquitto.conf
-wget https://raw.githubusercontent.com/ntguest/mydocker/main/files/passwd
-docker exec mosquitto mosquitto_passwd -U /mosquitto/config/passwd
-docker restart mosquitto
+# cd /home/data/mosquitto/config
+# wget https://raw.githubusercontent.com/ntguest/mydocker/main/files/mosquitto.conf
+# wget https://raw.githubusercontent.com/ntguest/mydocker/main/files/passwd
+# docker exec mosquitto mosquitto_passwd -U /mosquitto/config/passwd
+# docker restart mosquitto
 
 #cd /home/data/zigbee2mqtt/data
 #wget https://raw.githubusercontent.com/ntguest/mydocker/main/files/configuration.yaml
@@ -168,37 +168,6 @@ EOF
 
 docker restart homeassistant
 
-while true; do
-    read -p "Start the Bluetooth Integration Preparation (y/n)?" yn
-    case $yn in
-    [Yy]*) break ;;
-    [Nn]*) exit ;;
-    *) echo "Please answer yes or no." ;;
-    esac
-done
-
-clear
-    cat <<"EOF"
-    __  __                        ___              _      __              __ 
-   / / / /___  ____ ___  ___     /   |  __________(_)____/ /_____ _____  / /_
-  / /_/ / __ \/ __ `__ \/ _ \   / /| | / ___/ ___/ / ___/ __/ __ `/ __ \/ __/
- / __  / /_/ / / / / / /  __/  / ___ |(__  |__  ) (__  ) /_/ /_/ / / / / /_  
-/_/ /_/\____/_/ /_/ /_/\___/  /_/  |_/____/____/_/____/\__/\__,_/_/ /_/\__/  
-      / __ )/ /_  _____  / /_____  ____  / /_/ /_                            
-     / __  / / / / / _ \/ __/ __ \/ __ \/ __/ __ \                           
-    / /_/ / / /_/ /  __/ /_/ /_/ / /_/ / /_/ / / /                           
-   /_____/_/\__,_/\___/\__/\____/\____/\__/_/_/_/_                           
-        /  _/___  / /____  ____ __________ _/ /_(_)___  ____                 
-        / // __ \/ __/ _ \/ __ `/ ___/ __ `/ __/ / __ \/ __ \                
-      _/ // / / / /_/  __/ /_/ / /  / /_/ / /_/ / /_/ / / / /                
-     /___/_/_/_/\__/\___/\__, /_/   \__,_/\__/_/\____/_/ /_/                 
-          / __ \________/____/  ____ __________ _/ /_(_)___  ____            
-         / /_/ / ___/ _ \/ __ \/ __ `/ ___/ __ `/ __/ / __ \/ __ \           
-        / ____/ /  /  __/ /_/ / /_/ / /  / /_/ / /_/ / /_/ / / / /           
-       /_/   /_/   \___/ .___/\__,_/_/   \__,_/\__/_/\____/_/ /_/            
-                      /_/                                                    
-
-EOF
 read -r -p "Switch from dbus-daemon to dbus-broker? <y/N> " prompt
 if [[ "${prompt,,}" =~ ^(y|yes)$ ]]; then
 cat <<EOF >>/etc/apt/sources.list
