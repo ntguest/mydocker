@@ -1,0 +1,21 @@
+version: '2'
+services:
+    cloudflared:
+        image: erisamoe/cloudflared
+        container_name: cloudflared
+        restart: unless-stopped
+        command: tunnel run
+        environment:
+            - TUNNEL_TOKEN=eyJhIjoiOTYzYWRkZTZkNjRjZTNhMTM0ZTlkOTdhMDY4MWQzMWUiLCJ0IjoiNzM1ZTZmMzgtYzAxYS00Mjc3LWFjNjMtZDY2NWY4NGFhNDU1IiwicyI6Ik5UTXpZbVF6WmpVdFpEQmxZUzAwTmpobExUaGhZbUl0TVRrelpXTTBPRFUxT1RKbCJ9
+    mosquitto:
+        container_name: mqtt
+        image: eclipse-mosquitto
+        volumes:
+            - /home/data/mosquitto/config:/mosquitto/config
+            - /home/data/mosquitto/data:/mosquitto/data
+            - /home/data/mosquitto/log:/mosquitto/log
+        ports:
+            - "1883:1883"
+        restart: unless-stopped
+        stdin_open: true
+        tty: true
