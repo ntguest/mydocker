@@ -7,7 +7,18 @@ if ! whiptail -v; then
   apt install whiptail -y
 fi
 
-curl -fsSL get.docker.com | sh
+if ! docker info > /dev/null 2>&1; then
+  echo "This script uses docker, and it isn't running - please start docker and try again!"
+  case $ARCH in
+    "i386" | "i686")
+        apt install -y docker.io
+    ;;
+    *)
+        curl -fsSL get.docker.com | sh
+    ;;
+  esac
+fi
+
 curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
 chmod +x /usr/local/bin/docker-compose
 languages() {
