@@ -2,7 +2,7 @@
 set -e
 error() { echo -e "\e[31m[error] $*\e[39m"; exit 1; }
 if [[ $EUID != 0 ]]; then error This installer requires root privileges. Try again as \"root\" ... ; fi
-
+clear
 if ! whiptail -v > /dev/null 2>&1; then
   apt install whiptail -y
 fi
