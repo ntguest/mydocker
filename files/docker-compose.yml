@@ -62,7 +62,9 @@ services:
             - /home/data/mosquitto/log:/mosquitto/log
         ports:
             - "1883:1883"
-        restart: always
+        stdin_open: true
+        tty: true
+        restart: unless-stopped
     zigbee2mqtt:
         container_name: zigbee2mqtt
         image: koenkk/zigbee2mqtt
