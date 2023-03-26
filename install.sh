@@ -51,11 +51,11 @@ echo "Installing ...."
 #docker-compose up -d  > /dev/null 2>&1
 docker-compose up -d
 
-# cd /home/data/mosquitto/config
-# wget https://raw.githubusercontent.com/ntguest/mydocker/main/files/mosquitto.conf
-# wget https://raw.githubusercontent.com/ntguest/mydocker/main/files/passwd
-# docker exec mosquitto mosquitto_passwd -U /mosquitto/config/passwd
-# docker restart mosquitto
+cd /home/data/mosquitto/config
+wget https://raw.githubusercontent.com/ntguest/mydocker/main/files/mosquitto.conf
+wget https://raw.githubusercontent.com/ntguest/mydocker/main/files/passwd
+docker exec mosquitto mosquitto_passwd -U /mosquitto/config/passwd
+docker restart mosquitto
 
 #cd /home/data/zigbee2mqtt/data
 #wget https://raw.githubusercontent.com/ntguest/mydocker/main/files/configuration.yaml
@@ -166,10 +166,9 @@ panel_iframe:
     require_admin: true
 EOF
 
-docker restart homeassistant
 
-read -r -p "Switch from dbus-daemon to dbus-broker? <y/N> " prompt
-if [[ "${prompt,,}" =~ ^(y|yes)$ ]]; then
+
+
 cat <<EOF >>/etc/apt/sources.list
 deb http://deb.debian.org/debian bullseye-backports main contrib non-free
 
@@ -178,9 +177,8 @@ EOF
 apt-get update &>/dev/null
 apt-get -t bullseye-backports install -y dbus-broker
 systemctl enable dbus-broker.service &>/dev/null
-fi
-read -r -p "Install BlueZ? <y/N> " prompt
-if [[ "${prompt,,}" =~ ^(y|yes)$ ]]; then
+
 apt-get -t bullseye-backports install -y bluez*
-fi
+
+docker restart homeassistant
 echo -e "Finished, reboot for changes to take affect
