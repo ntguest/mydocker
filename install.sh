@@ -54,8 +54,8 @@ docker-compose up -d
 cd /home/data/mosquitto/config
 wget https://raw.githubusercontent.com/ntguest/mydocker/main/files/mosquitto.conf
 wget https://raw.githubusercontent.com/ntguest/mydocker/main/files/passwd
-docker exec mqtt mosquitto_passwd -U /mosquitto/config/passwd
-docker restart mqtt
+docker exec mosquitto mosquitto_passwd -U /mosquitto/config/passwd
+docker restart mosquitto
 
 #cd /home/data/zigbee2mqtt/data
 #wget https://raw.githubusercontent.com/ntguest/mydocker/main/files/configuration.yaml
