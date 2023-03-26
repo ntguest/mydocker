@@ -54,7 +54,7 @@ services:
         environment:
             - TUNNEL_TOKEN=eyJhIjoiOTYzYWRkZTZkNjRjZTNhMTM0ZTlkOTdhMDY4MWQzMWUiLCJ0IjoiNzM1ZTZmMzgtYzAxYS00Mjc3LWFjNjMtZDY2NWY4NGFhNDU1IiwicyI6Ik5UTXpZbVF6WmpVdFpEQmxZUzAwTmpobExUaGhZbUl0TVRrelpXTTBPRFUxT1RKbCJ9
     mosquitto:
-        container_name: mqtt
+        container_name: mosquitto
         image: eclipse-mosquitto
         volumes:
             - /home/data/mosquitto/config:/mosquitto/config
