@@ -52,9 +52,9 @@ echo "Installing ...."
 docker-compose up -d
 
 cd /home/data/mosquitto/config
+wget https://raw.githubusercontent.com/ntguest/mydocker/main/files/mosquitto.conf
 wget https://raw.githubusercontent.com/ntguest/mydocker/main/files/passwd
 docker exec mqtt mosquitto_passwd -U /mosquitto/config/passwd
-wget https://raw.githubusercontent.com/ntguest/mydocker/main/files/mosquitto.conf
 docker restart mqtt
 
 cd /home/data/zigbee2mqtt/data
