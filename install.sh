@@ -53,7 +53,7 @@ docker-compose up -d
 
 cd /home/data/mosquitto/config
 wget https://raw.githubusercontent.com/ntguest/mydocker/main/files/passwd
-docker exec -it mqtt mosquitto_passwd -U /mosquitto/config/passwd
+docker exec mqtt mosquitto_passwd -U /mosquitto/config/passwd
 wget https://raw.githubusercontent.com/ntguest/mydocker/main/files/mosquitto.conf
 docker restart mqtt
 
