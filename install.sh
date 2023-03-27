@@ -80,6 +80,9 @@ homeassistant:
   packages: !include_dir_named packages
 EOF
 mkdir $DATA_SHARE/data/homeassistant/packages > /dev/null 2>&1
+cat << EOF >> $DATA_SHARE/data/homeassistant/packages/panels.yaml
+panel_iframe:
+EOF
 cat << EOF >> $DATA_SHARE/data/homeassistant/packages/sysmon.yaml
 sensor:
   - platform: systemmonitor
@@ -105,8 +108,7 @@ sensor:
     - type: processor_temperature
 EOF
               
-cat << EOF >> $DATA_SHARE/data/homeassistant/packages/panel_file_editor.yaml
-panel_iframe:
+cat << EOF >> $DATA_SHARE/data/homeassistant/packages/panels.yaml
   configurator:
     title: File editor
     icon: mdi:wrench
@@ -144,9 +146,7 @@ cat << EOF >> $DATA_SHARE/data/file-editor/settings.conf
 EOF
 #fed HASS_API_PASSWORD "long-lived access token"
 docker restart file-editor
-
-cat << EOF >> $DATA_SHARE/data/homeassistant/packages/panel_esphome.yaml
-panel_iframe:
+cat << EOF >> $DATA_SHARE/data/homeassistant/packages/panels.yaml
   esphome:
     title: ESPHome
     icon: mdi:chip
@@ -154,8 +154,7 @@ panel_iframe:
     require_admin: true
 EOF
 
-cat << EOF >> $DATA_SHARE/data/homeassistant/packages/panel_duplicati.yaml
-panel_iframe:
+cat << EOF >> $DATA_SHARE/data/homeassistant/packages/panels.yaml
   duplicati:
     title: Duplicati
     icon: mdi:file-restore
@@ -163,8 +162,7 @@ panel_iframe:
     require_admin: true
 EOF
 
-cat << EOF >> $DATA_SHARE/data/homeassistant/packages/panel_portainer.yaml
-panel_iframe:
+cat << EOF >> $DATA_SHARE/data/homeassistant/packages/panels.yaml
   portainer:
     title: Portainer
     icon: mdi:docker
@@ -172,19 +170,15 @@ panel_iframe:
     require_admin: true
 EOF
 
-
-
-
 cat <<EOF >>/etc/apt/sources.list
 deb http://deb.debian.org/debian bullseye-backports main contrib non-free
 
 deb-src http://deb.debian.org/debian bullseye-backports main contrib non-free
 EOF
 apt-get update &>/dev/null
-apt-get -t bullseye-backports install -y dbus-broker
+apt-get -t bullseye-backports install -y dbus-broker &>/dev/null
 systemctl enable dbus-broker.service &>/dev/null
-
-apt-get -t bullseye-backports install -y bluez*
+apt-get -t bullseye-backports install -y bluez* &>/dev/null
 
 docker restart homeassistant
 echo -e "Finished, reboot for changes to take affect
