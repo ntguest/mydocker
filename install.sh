@@ -3,28 +3,14 @@ set -e
 error() { echo -e "\e[31m[error] $*\e[39m"; exit 1; }
 if [[ $EUID != 0 ]]; then error This installer requires root privileges. Try again as \"root\" ... ; fi
 clear
-if ! whiptail -v > /dev/null 2>&1; then
-  apt install whiptail -y
-fi
+if ! whiptail -v > /dev/null 2>&1; then apt install whiptail -y > /dev/null 2>&1; fi
 
-if ! wget -v > /dev/null 2>&1; then
-  apt install wget  -y
-fi
+if ! wget -v > /dev/null 2>&1; then apt install wget -y > /dev/null 2>&1; fi
 
-if ! docker info > /dev/null 2>&1; then
-  echo "This script uses docker, and it isn't running - please start docker and try again!"
-  case $ARCH in
-    "i386" | "i686")
-        apt install -y docker.io
-    ;;
-    *)
-        curl -fsSL get.docker.com | sh
-    ;;
-  esac
-fi
+if ! docker info ; then echo "Installing docker"; case $ARCH in "i386" | "i686") apt install -y docker.io > /dev/null 2>&1;; *) curl -fsSL get.docker.com | sh > /dev/null 2>&1;; esac; fi; usermod -aG docker $USER 
 
-curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-chmod +x /usr/local/bin/docker-compose
+curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose > /dev/null 2>&1 
+chmod +x /usr/local/bin/docker-compose > /dev/null 2>&1 
 languages() {
 msg="message_$langset[@]"; msg=("${!msg}")
 for b in ${!message_en[@]} ; do if [[ ! ${msg[$b]} ]] ; then msg[$b]=${message_en[$b]}; fi; done
